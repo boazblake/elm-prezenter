@@ -1,34 +1,40 @@
 {
-  "players": [
+  "slides": [
     {
       "id": "1",
-      "name": "Sally",
-      "level": 5
+      "title": "Overview",
+      "position": 0,
+      "content": "This slide will contain information about the app"
     },
     {
       "id": "2",
-      "name": "Lance",
-      "level": 1
+      "title": "Framework",
+      "position": 2,
+      "content": "some information about Elm"
     },
     {
       "id": "3",
-      "name": "Aki",
-      "level": 3
+      "title": "Code ?",
+      "position": 3,
+      "content": "some markup?"
     },
     {
       "id": "4",
-      "name": "Maria",
-      "level": 4
+      "title": "slide 4",
+      "position": 4,
+      "content": "this is slide 4"
     },
     {
       "id": "5",
-      "name": "Julian",
-      "level": 1
+      "title": "slide 5",
+      "position": 1,
+      "content": "this is slide 5"
     },
     {
       "id": "6",
-      "name": "Jaime",
-      "level": 1
+      "title": "slide 6",
+      "position": 6,
+      "content": "this is slide 6"
     }
   ]
 }

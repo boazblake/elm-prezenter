@@ -1,8 +1,9 @@
 module Models.Routes exposing (..)
-import Models.Player exposing (PlayerId)
+import Models.Slide exposing (SlideId)
 
 type Route
-  = PlayersRoute
-  | PlayerRoute PlayerId
+  = SlidesRoute
+  | EditSlideRoute SlideId
+  | ShowSlideRoute SlideId
   | NotFoundRoute
 

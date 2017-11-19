@@ -4,7 +4,7 @@ import Msgs exposing (Msg)
 import Models.State exposing (Model, initialModel)
 import Update exposing (update)
 import View exposing (view)
-import Commands exposing (fetchPlayers)
+import Commands exposing (fetchSlides)
 import Navigation exposing (Location)
 import Routing
 
@@ -18,7 +18,7 @@ init location =
       currentRoute =
         Routing.parseLocation location
   in
-    ( initialModel currentRoute, fetchPlayers )
+    ( initialModel currentRoute, fetchSlides )
 
 
 ---- SUBSCRIPTIONS ----

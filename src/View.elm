@@ -3,10 +3,11 @@ module View exposing (..)
 import Html exposing (Html, div, text)
 import Msgs exposing (Msg)
 import Models.State exposing (Model)
-import Models.Player exposing (PlayerId)
+import Models.Slide exposing (SlideId)
 import Models.Routes exposing (Route(..))
-import Players.List
-import Players.Edit
+import Slides.List
+import Slides.Edit
+import Slides.Show
 import RemoteData
 
 view : Model -> Html Msg
@@ -17,34 +18,63 @@ view model =
 page : Model -> Html Msg
 page model =
   case model.route of
-    Models.Routes.PlayersRoute ->
-      Players.List.view model.players
+    Models.Routes.SlidesRoute ->
+      Slides.List.view model.slides
     
-    Models.Routes.PlayerRoute id ->
-      playerEditPage model id
+    Models.Routes.EditSlideRoute id ->
+      slideEditPage model id
     
+    Models.Routes.ShowSlideRoute id ->
+      slideShowPage model id
+
     Models.Routes.NotFoundRoute ->
       notFoundView
 
-playerEditPage : Model -> PlayerId -> Html Msg
-playerEditPage model playerId =
-  case model.players of
+slideShowPage : Model -> SlideId -> Html Msg
+slideShowPage model slideId =
+  case model.slides of
+    RemoteData.NotAsked ->
+      text ""
+
+    RemoteData.Loading ->
+      text "Slide is loading ..."
+    
+    RemoteData.Success slides ->
+      let
+          maybeSlide =
+            slides
+              |> List.filter (\slide -> slide.id == slideId)
+              |> List.head
+      in
+        case maybeSlide of
+          Just slide ->
+            Slides.Show.view slide
+
+          Nothing ->
+            notFoundView
+
+    RemoteData.Failure err ->
+      text (toString err)
+
+slideEditPage : Model -> SlideId -> Html Msg
+slideEditPage model slideId =
+  case model.slides of
     RemoteData.NotAsked ->
       text ""
     
     RemoteData.Loading ->
       text "Data is Loading ..."
 
-    RemoteData.Success players ->
+    RemoteData.Success slides ->
       let
-          maybePlayer =
-          players
-            |> List.filter (\player -> player.id == playerId)
+          maybeSlide =
+          slides
+            |> List.filter (\slide -> slide.id == slideId)
             |> List.head
       in
-        case maybePlayer of
-          Just player ->
-            Players.Edit.view player
+        case maybeSlide of
+          Just slide ->
+            Slides.Edit.view slide
           
           Nothing ->
             notFoundView

@@ -1,15 +1,15 @@
 module Models.State exposing (..)
-import Models.Player exposing (Player)
+import Models.Slide exposing (Slide)
 import Models.Routes exposing (Route(..))
 import RemoteData exposing (WebData)
 
 type alias Model =
-    { players : WebData (List Player)
+    { slides : WebData (List Slide)
     , route : Route
     }
 
 initialModel : Route -> Model
 initialModel route =
-  { players = RemoteData.Loading
+  { slides = RemoteData.Loading
   , route = route
   }

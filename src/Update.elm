@@ -1,18 +1,18 @@
 module Update exposing (..)
 
-import Commands exposing (savePlayerCmd)
+import Commands exposing (saveSlideCmd)
 import Routing exposing (parseLocation)
 import Msgs exposing (Msg(..))
 import Models.State exposing (Model)
-import Models.Player exposing (Player)
+import Models.Slide exposing (Slide)
 import RemoteData
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Msgs.OnFetchPlayers response ->
-          ( { model | players = response}, Cmd.none )
+        Msgs.OnFetchSlides response ->
+          ( { model | slides = response}, Cmd.none )
 
         Msgs.OnLocationChange location ->
           let
@@ -21,33 +21,48 @@ update msg model =
           in
               ( {model | route = newRoute }, Cmd.none )
         
-        Msgs.ChangeLevel player howMuch ->
+        Msgs.ChangeLevel slide howMuch ->
           let
-              updatedPlayer =
-                { player | level = player.level + howMuch }
+              updatedSlide =
+                { slide | position = slide.position + howMuch }
           in
-              (model, savePlayerCmd updatedPlayer )
+              (model, saveSlideCmd updatedSlide )
         
-        Msgs.OnPlayerSave (Ok player) ->
-          ( updatePlayer model player, Cmd.none)
+        Msgs.OnSlideSave (Ok slide) ->
+          ( updateSlide model slide, Cmd.none)
         
-        Msgs.OnPlayerSave (Err error) ->
+        Msgs.OnSlideSave (Err error) ->
           (model, Cmd.none)
 
-updatePlayer : Model -> Player -> Model
-updatePlayer model updatedPlayer =
-  let
-      pick currentPlayer =
-        if updatedPlayer.id == currentPlayer.id
-          then
-            updatedPlayer
-        else
-          currentPlayer
-      
-      updatePlayerList players =
-        List.map pick players
+        Msgs.ChangeTitle slide newTitle ->
+          let
+              updatedSlide slide =
+                { slide | title = newTitle }
+          in
+              (model, saveSlideCmd (updatedSlide slide) )
 
-      updatePlayers =
-        RemoteData.map updatePlayerList model.players
+
+        Msgs.ChangeContent slide newContent ->
+          let
+              updatedSlide slide =
+                { slide | content = newContent }
+          in
+              (model, saveSlideCmd (updatedSlide slide) )
+
+updateSlide : Model -> Slide -> Model
+updateSlide model updatedSlide =
+  let
+      pick currentSlide =
+        if updatedSlide.id == currentSlide.id
+          then
+            updatedSlide
+        else
+          currentSlide
+      
+      updateSlideList slides =
+        List.map pick slides
+
+      updateSlides =
+        RemoteData.map updateSlideList model.slides
   in
-      { model | players = updatePlayers }
+      { model | slides = updateSlides }

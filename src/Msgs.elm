@@ -1,13 +1,15 @@
 module Msgs exposing (..)
 
 import Http
-import Models.Player exposing (Player)
+import Models.Slide exposing (Slide)
 import Navigation exposing (Location)
 import RemoteData exposing (WebData)
 
 
 type Msg
-  = OnFetchPlayers (WebData (List Player))
+  = OnFetchSlides (WebData (List Slide))
   | OnLocationChange Location
-  | ChangeLevel Player Int
-  | OnPlayerSave (Result Http.Error Player)
+  | ChangeLevel Slide Int
+  | ChangeTitle Slide String
+  | ChangeContent Slide String
+  | OnSlideSave (Result Http.Error Slide)

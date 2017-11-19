@@ -6,60 +6,62 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import Json.Decode.Pipeline exposing (decode, required)
 import Msgs exposing (Msg)
-import Models.Player exposing (PlayerId, Player)
+import Models.Slide exposing (SlideId, Slide)
 import RemoteData
 
 -----FETCH----------------
-fetchPlayers : Cmd Msg
-fetchPlayers =
-  Http.get fetchPlayersUrl playersDecoder
+fetchSlides : Cmd Msg
+fetchSlides =
+  Http.get fetchSlidesUrl slidesDecoder
     |> RemoteData.sendRequest
-    |> Cmd.map Msgs.OnFetchPlayers
+    |> Cmd.map Msgs.OnFetchSlides
 
-fetchPlayersUrl : String
-fetchPlayersUrl =
-  "http://localhost:4000/players"
+fetchSlidesUrl : String
+fetchSlidesUrl =
+  "http://localhost:4000/slides"
 
-playersDecoder : Decode.Decoder (List Player)
-playersDecoder = Decode.list playerDecoder
+slidesDecoder : Decode.Decoder (List Slide)
+slidesDecoder = Decode.list slideDecoder
 
-playerDecoder : Decode.Decoder Player
-playerDecoder =
-  decode Player
+slideDecoder : Decode.Decoder Slide
+slideDecoder =
+  decode Slide
     |> required "id" Decode.string
-    |> required "name" Decode.string
-    |> required "level" Decode.int
+    |> required "title" Decode.string
+    |> required "position" Decode.int
+    |> required "content" Decode.string
 
 
 -----SAVE -----------------------------
-savePlayerUrl : PlayerId -> String
-savePlayerUrl playerId =
-  "http://localhost:4000/players/" ++ playerId
+saveSlideUrl : SlideId -> String
+saveSlideUrl slideId =
+  "http://localhost:4000/slides/" ++ slideId
 
-savePlayerRequest : Player -> Http.Request Player
-savePlayerRequest player =
+saveSlideRequest : Slide -> Http.Request Slide
+saveSlideRequest slide =
   Http.request
-    { body = playerEncoder player|> Http.jsonBody
-    , expect = Http.expectJson playerDecoder
+    { body = slideEncoder slide|> Http.jsonBody
+    , expect = Http.expectJson slideDecoder
     , headers = []
     , method = "PATCH"
     , timeout = Nothing
-    , url = savePlayerUrl player.id
+    , url = saveSlideUrl slide.id
     , withCredentials = False
     }
 
-savePlayerCmd : Player -> Cmd Msg
-savePlayerCmd player =
-  savePlayerRequest player
-    |>Http.send Msgs.OnPlayerSave
+saveSlideCmd : Slide -> Cmd Msg
+saveSlideCmd slide =
+  saveSlideRequest slide
+    |>Http.send Msgs.OnSlideSave
 
-playerEncoder : Player -> Encode.Value
-playerEncoder player =
+slideEncoder : Slide -> Encode.Value
+slideEncoder slide =
   let
       attributes =
-        [ ("id", Encode.string player.id)
-        , ("name", Encode.string player.name)
-        , ("level", Encode.int player.level)
+        [ ("id", Encode.string slide.id)
+        , ("title", Encode.string slide.title)
+        , ("position", Encode.int slide.position)
+        , ("content", Encode.string slide.content)
         ]
   in
       Encode.object attributes

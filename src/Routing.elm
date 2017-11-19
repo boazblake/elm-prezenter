@@ -1,16 +1,17 @@
 module Routing exposing (..)
 
 import Navigation exposing (Location)
-import Models.Player exposing (PlayerId)
+import Models.Slide exposing (SlideId)
 import Models.Routes exposing (Route(..))
 import UrlParser exposing (..)
 
 matchers : Parser (Route -> a) a
 matchers =
   oneOf
-    [ map PlayersRoute top
-    , map PlayerRoute (s "players" </> string)
-    , map PlayersRoute (s "players")
+    [ map SlidesRoute top
+    , map EditSlideRoute (s "edit-slides" </> string)
+    , map ShowSlideRoute (s "show-slides" </> string)
+    , map SlidesRoute (s "slides")
     ]
 
 parseLocation : Location -> Route
@@ -22,11 +23,14 @@ parseLocation location =
     nothing ->
       NotFoundRoute
 
-playersPath : String
-playersPath =
-  "#players"
+slidesPath : String
+slidesPath =
+  "#slides"
 
-playerPath : PlayerId -> String
-playerPath id =
-  "#players/" ++ id
+editSlidePath : SlideId -> String
+editSlidePath id =
+  "#edit-slides/" ++ id
 
+showSlidePath : SlideId -> String
+showSlidePath id =
+  "#show-slides/" ++ id
