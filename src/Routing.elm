@@ -34,3 +34,19 @@ editSlidePath id =
 showSlidePath : SlideId -> String
 showSlidePath id =
   "#show-slides/" ++ id
+
+nextSlidePath : SlideId  -> String
+nextSlidePath id =
+  let
+      newId =
+        toString (Result.withDefault 0 (String.toInt id) + 1)
+  in
+  "#show-slides/" ++ newId
+
+prevSlidePath : SlideId  -> String
+prevSlidePath id =
+  let
+    newId =
+        toString (Result.withDefault 0 (String.toInt id) - 1)
+  in
+    "#show-slides/" ++ newId

@@ -5,5 +5,7 @@ type Route
   = SlidesRoute
   | EditSlideRoute SlideId
   | ShowSlideRoute SlideId
+  | NextSlideRoute SlideId
+  | PrevSlideRoute SlideId
   | NotFoundRoute
 

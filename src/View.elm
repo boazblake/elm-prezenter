@@ -5,9 +5,9 @@ import Msgs exposing (Msg)
 import Models.State exposing (Model)
 import Models.Slide exposing (SlideId)
 import Models.Routes exposing (Route(..))
-import Slides.List
-import Slides.Edit
-import Slides.Show
+import Views.Slides.List
+import Views.Slides.Edit
+import Views.Slides.Show
 import RemoteData
 
 view : Model -> Html Msg
@@ -19,13 +19,20 @@ page : Model -> Html Msg
 page model =
   case model.route of
     Models.Routes.SlidesRoute ->
-      Slides.List.view model.slides
+      Views.Slides.List.view model.slides
     
     Models.Routes.EditSlideRoute id ->
       slideEditPage model id
     
     Models.Routes.ShowSlideRoute id ->
       slideShowPage model id
+
+    Models.Routes.NextSlideRoute id ->
+      slideShowPage model id
+
+    Models.Routes.PrevSlideRoute id ->
+      slideShowPage model id
+
 
     Models.Routes.NotFoundRoute ->
       notFoundView
@@ -48,7 +55,7 @@ slideShowPage model slideId =
       in
         case maybeSlide of
           Just slide ->
-            Slides.Show.view slide
+            Views.Slides.Show.view slide
 
           Nothing ->
             notFoundView
@@ -74,7 +81,7 @@ slideEditPage model slideId =
       in
         case maybeSlide of
           Just slide ->
-            Slides.Edit.view slide
+            Views.Slides.Edit.view slide
           
           Nothing ->
             notFoundView

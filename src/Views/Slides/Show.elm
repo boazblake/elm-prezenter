@@ -1,10 +1,10 @@
-module Slides.Show exposing (..)
+module Views.Slides.Show exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (class, href)
 import Msgs exposing (Msg)
 import Models.Slide exposing (Slide)
-import Routing exposing (slidesPath)
+import Routing exposing (slidesPath, nextSlidePath, prevSlidePath)
 
 view: Slide -> Html Msg
 view model =
@@ -35,4 +35,30 @@ slideShow slide =
     , div [ class "col col-7" ]
         [ span [ class "h1 bold" ] [ p [] [ text (toString slide.content) ]]
         ]
+    , div [ class "col col-12" ]
+        [ prevBtn slide
+        , nextBtn slide]
     ]
+
+prevBtn : Slide -> Html.Html Msg
+prevBtn slide =
+  let
+    path =
+      prevSlidePath slide.id
+  in
+    a [ class "btn regular"
+      , href path
+      ]
+      [ i [ class "fa fa-chevron-left mr1"] [], text "Previous Slide"]
+
+nextBtn : Slide -> Html.Html Msg
+nextBtn slide =
+  let
+    path =
+      nextSlidePath slide.id
+  
+  in
+    a [ class "btn regular"
+      , href path
+      ]
+      [ text "Next Slide  " , i [ class "fa fa-chevron-right mr1"] []]

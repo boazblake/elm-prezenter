@@ -1,4 +1,4 @@
-module Slides.Edit exposing (..)
+module Views.Slides.Edit exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (class, value, href, placeholder)

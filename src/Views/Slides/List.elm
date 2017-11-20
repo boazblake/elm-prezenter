@@ -1,4 +1,4 @@
-module Slides.List exposing (..)
+module Views.Slides.List exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (class, href)
@@ -69,7 +69,7 @@ editBtn slide =
         [ class "btn regular"
         , href path
         ]
-        [ i [class "fa fa-pencil mr1" ] [], text "Edit"]
+        [ i [class "fa fa-pencil mr1" ] []]
 
 showBtn : Slide -> Html.Html Msg
 showBtn slide =
@@ -81,4 +81,4 @@ showBtn slide =
     a [ class "btn regular"
       , href path
       ]
-      [ i [ class "fa fa-eye mr1"] [], text "View Slide"]
+      [ i [ class "fa fa-eye mr1"] []]
